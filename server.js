@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
 const connectDB = require('./config/db');
 
 const app = express();
 
-require('dotenv').config();
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -29,7 +29,13 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5500;
 
 connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server running on port ${PORT}`);
-    });
+    if (!process.env.VERCEL) {
+        app.listen(PORT, () => {
+            console.log(`🚀 Server running on port ${PORT}`);
+        });
+    }
+}).catch((err) => {
+    console.error('Failed to connect to MongoDB:', err.message);
 });
+
+module.exports = app;
