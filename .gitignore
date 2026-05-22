@@ -17,9 +17,10 @@ vendor/
 .env
 .env.*
 *.env
-DE/editor files ---
-
-
+# Editor files ---
+*.swp
+*.swo
+*~
 
 # --- Mac system files ---
 .AppleDouble

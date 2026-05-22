@@ -12,6 +12,12 @@ exports.createInvoice = async (req, res) => {
             await existingCustomer.save();
         }
 
+        const customerData = {
+            name: existingCustomer.name,
+            mobile: existingCustomer.mobile,
+            address: existingCustomer.address,
+        };
+
         const invoiceNumber = `INV-${Date.now().toString().slice(-6)}-${uuidv4().slice(0, 4).toUpperCase()}`;
 
         let subtotal = 0, totalGst = 0;
@@ -30,7 +36,7 @@ exports.createInvoice = async (req, res) => {
 
         const invoice = new Invoice({
             invoiceNumber,
-            customer: existingCustomer,
+            customer: customerData,
             items: processedItems,
             subtotal,
             totalGst,
