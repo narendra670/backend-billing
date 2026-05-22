@@ -1,0 +1,34 @@
+# --- OS files ---
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Dependency directories ---
+node_modules/
+vendor/
+
+# --- Environment variables ---
+.env
+.env.*
+*.env
+DE/editor files ---
+
+
+
+# --- Mac system files ---
+.AppleDouble
+.LSOverride
+
+# --- Windows system files ---
+Desktop.ini
+
+# --- Temporary files ---
+tmp/
+temp/
+*.tmp
