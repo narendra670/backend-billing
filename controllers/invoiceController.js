@@ -6,9 +6,19 @@ exports.createInvoice = async (req, res) => {
     try {
         const { customer, items } = req.body;
 
-        let existingCustomer = await Customer.findOne({ mobile: customer.mobile });
+        if (!customer || !customer.name || !customer.mobile) {
+            return res.status(400).json({ message: 'Customer name and mobile are required' });
+        }
+
+        if (!items || items.length === 0) {
+            return res.status(400).json({ message: 'At least one item is required' });
+        }
+
+        const customerFields = { name: customer.name, mobile: customer.mobile, address: customer.address || '' };
+
+        let existingCustomer = await Customer.findOne({ mobile: customerFields.mobile });
         if (!existingCustomer) {
-            existingCustomer = new Customer(customer);
+            existingCustomer = new Customer(customerFields);
             await existingCustomer.save();
         }
 
@@ -47,6 +57,7 @@ exports.createInvoice = async (req, res) => {
         await invoice.save();
         res.status(201).json(invoice);
     } catch (err) {
+        console.error('Create invoice error:', err);
         res.status(500).json({ message: err.message });
     }
 };
@@ -57,6 +68,7 @@ exports.getInvoices = async (req, res) => {
             .sort({ createdAt: -1 });
         res.json(invoices);
     } catch (err) {
+        console.error('Get invoices error:', err);
         res.status(500).json({ message: err.message });
     }
 };
@@ -67,6 +79,7 @@ exports.getInvoiceById = async (req, res) => {
         if (!invoice) return res.status(404).json({ message: 'Invoice not found' });
         res.json(invoice);
     } catch (err) {
+        console.error('Get invoice by ID error:', err);
         res.status(500).json({ message: err.message });
     }
 };
